@@ -13,20 +13,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex bg-gray-50">
-        {/* Sidebar placeholder */}
-        <aside className="w-60 bg-white border-r border-gray-200">
-          <div className="p-4 font-bold text-xl text-sky-700">FinTrack</div>
-        </aside>
-
-        <main className="flex-1 flex flex-col">
-          {/* Header placeholder */}
-          <header className="h-16 border-b border-gray-200 bg-white flex items-center px-4">
-            Header
-          </header>
-
-          <div className="p-6">{children}</div>
-        </main>
+      <body className="antialiased bg-[#FCFDFD] text-[#1B2528] min-h-screen">
+        {children}
       </body>
     </html>
   );
