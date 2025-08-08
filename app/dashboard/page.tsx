@@ -5,6 +5,7 @@ import SummaryCards from "@/components/SummaryCards";
 import WalletLedgerHeader from "@/components/WalletLedgerHeader";
 import Participants from "@/components/Participants";
 import TransactionTable from "@/components/TransactionTable";
+import Footer from "@/components/Footer";
 import { summaryData, transactions, participantsData } from "@/data/mockData";
 
 export default function DashboardPage() {
@@ -29,6 +30,7 @@ export default function DashboardPage() {
 
           <SummaryCards data={summaryData} />
           <TransactionTable transactions={transactions} />
+          <Footer />
         </main>
       </div>
     </div>
