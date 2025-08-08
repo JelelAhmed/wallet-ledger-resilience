@@ -1,5 +1,8 @@
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
+import Tabs from "@/components/Tabs";
+import SummaryCards from "@/components/SummaryCards";
+import { summaryData } from "@/data/mockData";
 
 export default function DashboardPage() {
   return (
@@ -16,7 +19,9 @@ export default function DashboardPage() {
               StatusBadge
             </div>
           </div>
-          Tabs SummaryCards TransactionTable
+          <Tabs tabs={["Overview", "Transactions"]} activeTab="Overview" />
+          <SummaryCards data={summaryData} />
+          TransactionTable
         </main>
       </div>
     </div>
