@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Transaction } from "@/types";
 
 interface TransactionTableProps {
@@ -16,53 +16,60 @@ export default function TransactionTable({
   } | null>(null);
 
   const handleSort = (key: keyof Transaction) => {
-    setSortConfig((current) => {
-      if (current?.key === key) {
+    setSortConfig((prev) => {
+      if (prev?.key === key) {
         return {
           key,
-          direction: current.direction === "asc" ? "desc" : "asc",
+          direction: prev.direction === "asc" ? "desc" : "asc",
         };
       }
       return { key, direction: "asc" };
     });
   };
 
-  const sortedTransactions = [...transactions].sort((a, b) => {
-    if (!sortConfig) return 0;
-    const { key, direction } = sortConfig;
-    const aValue = a[key];
-    const bValue = b[key];
-
-    // Handle numbers
-    if (typeof aValue === "number" && typeof bValue === "number") {
-      return direction === "asc" ? aValue - bValue : bValue - aValue;
+  const sortedTransactions = useMemo(() => {
+    const sortable: Transaction[] = [...transactions];
+    if (sortConfig) {
+      sortable.sort((a, b) => {
+        const aValue = a[sortConfig.key];
+        const bValue = b[sortConfig.key];
+        if (typeof aValue === "number" && typeof bValue === "number") {
+          return sortConfig.direction === "asc"
+            ? aValue - bValue
+            : bValue - aValue;
+        }
+        return sortConfig.direction === "asc"
+          ? String(aValue).localeCompare(String(bValue))
+          : String(bValue).localeCompare(String(aValue));
+      });
     }
+    return sortable;
+  }, [transactions, sortConfig]);
 
-    // Handle strings
-    if (typeof aValue === "string" && typeof bValue === "string") {
-      return direction === "asc"
-        ? aValue.localeCompare(bValue)
-        : bValue.localeCompare(aValue);
-    }
-
-    return 0;
-  });
-
-  const SortArrow = ({ column }: { column: keyof Transaction }) => {
-    const activeColor = "#2463EB";
-    const inactiveColor = "#94A3B8";
-
-    if (sortConfig?.key !== column)
-      return <span style={{ color: inactiveColor }}>▾</span>;
-    return (
-      <span style={{ color: activeColor }}>
-        {sortConfig.direction === "asc" ? "▴" : "▾"}
-      </span>
-    );
-  };
+  const getHeaderClass = (key: keyof Transaction) =>
+    sortConfig?.key === key ? "text-blue-600" : "";
 
   return (
     <div className="mt-6 overflow-x-auto">
+      {/* Mobile sort control */}
+      <div className="sm:hidden mb-4">
+        <label className="block text-sm font-medium text-gray-600">
+          Sort by:
+        </label>
+        <select
+          value={sortConfig?.key || ""}
+          onChange={(e) => handleSort(e.target.value as keyof Transaction)}
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm text-sm"
+        >
+          <option value="">Default</option>
+          <option value="date">Date</option>
+          <option value="remark">Remark</option>
+          <option value="amount">Amount</option>
+          <option value="currency">Currency</option>
+          <option value="type">Type</option>
+        </select>
+      </div>
+
       {/* Desktop Table */}
       <table className="w-full hidden sm:table table-fixed border-separate border-spacing-x-4 border-spacing-y-0">
         <colgroup>
@@ -75,54 +82,86 @@ export default function TransactionTable({
 
         <thead>
           <tr className="text-left text-[13px] font-medium text-[rgba(21,39,45,0.62)]">
-            {/* Date */}
             <th
-              className="py-2 pl-0 pr-6 border-b-[1.5px] border-[rgba(73,101,110,0.2)] cursor-pointer"
+              className={`py-2 pl-0 pr-6 border-b-[1.5px] cursor-pointer ${getHeaderClass(
+                "date"
+              )}`}
               onClick={() => handleSort("date")}
             >
               <div className="flex items-center gap-1">
                 <span>Date</span>
-                <SortArrow column="date" />
+                <span>
+                  {sortConfig?.key === "date" && sortConfig.direction === "asc"
+                    ? "▲"
+                    : "▼"}
+                </span>
               </div>
             </th>
             {/* Remark */}
             <th
-              className="py-2 px-6 border-b-[1.5px] border-[rgba(73,101,110,0.2)] cursor-pointer"
+              className={`py-2 px-6 border-b-[1.5px] cursor-pointer ${getHeaderClass(
+                "remark"
+              )}`}
               onClick={() => handleSort("remark")}
             >
               <div className="flex items-center gap-1">
                 <span>Remark</span>
-                <SortArrow column="remark" />
+                <span>
+                  {sortConfig?.key === "remark" &&
+                  sortConfig.direction === "asc"
+                    ? "▲"
+                    : "▼"}
+                </span>
               </div>
             </th>
             {/* Amount */}
             <th
-              className="py-2 px-6 border-b-[1.5px] border-[rgba(73,101,110,0.2)] text-right cursor-pointer"
+              className={`py-2 px-6 border-b-[1.5px] text-right cursor-pointer ${getHeaderClass(
+                "amount"
+              )}`}
               onClick={() => handleSort("amount")}
             >
               <div className="flex items-center gap-1 justify-end">
                 <span>Amount</span>
-                <SortArrow column="amount" />
+                <span>
+                  {sortConfig?.key === "amount" &&
+                  sortConfig.direction === "asc"
+                    ? "▲"
+                    : "▼"}
+                </span>
               </div>
             </th>
             {/* Currency */}
             <th
-              className="py-2 px-6 border-b-[1.5px] border-[rgba(73,101,110,0.2)] cursor-pointer"
+              className={`py-2 px-6 border-b-[1.5px] cursor-pointer ${getHeaderClass(
+                "currency"
+              )}`}
               onClick={() => handleSort("currency")}
             >
               <div className="flex items-center gap-1">
                 <span>Currency</span>
-                <SortArrow column="currency" />
+                <span>
+                  {sortConfig?.key === "currency" &&
+                  sortConfig.direction === "asc"
+                    ? "▲"
+                    : "▼"}
+                </span>
               </div>
             </th>
             {/* Type */}
             <th
-              className="py-2 pl-6 pr-0 border-b-[1.5px] border-[rgba(73,101,110,0.2)] cursor-pointer"
+              className={`py-2 pl-6 pr-0 border-b-[1.5px] cursor-pointer ${getHeaderClass(
+                "type"
+              )}`}
               onClick={() => handleSort("type")}
             >
               <div className="flex items-center gap-1 justify-end">
                 <span>Type</span>
-                <SortArrow column="type" />
+                <span>
+                  {sortConfig?.key === "type" && sortConfig.direction === "asc"
+                    ? "▲"
+                    : "▼"}
+                </span>
               </div>
             </th>
           </tr>
@@ -134,6 +173,7 @@ export default function TransactionTable({
               t.amount < 0
                 ? `-$${Math.abs(t.amount).toLocaleString()}`
                 : `$${t.amount.toLocaleString()}`;
+
             const isLastRow = index === sortedTransactions.length - 1;
 
             return (
@@ -141,7 +181,6 @@ export default function TransactionTable({
                 key={t.id}
                 className="hover:bg-[rgba(56,103,118,0.05)] cursor-pointer"
               >
-                {/* Date */}
                 <td
                   className={`py-[18px] pl-0 pr-6 text-[15px] text-[#1B2528] ${
                     !isLastRow ? "border-b border-[rgba(73,101,110,0.2)]" : ""
@@ -150,7 +189,6 @@ export default function TransactionTable({
                   {t.date}
                 </td>
 
-                {/* Remark */}
                 <td
                   className={`py-[18px] px-6 text-[15px] text-[#1B2528] ${
                     !isLastRow ? "border-b border-[rgba(73,101,110,0.2)]" : ""
@@ -159,7 +197,6 @@ export default function TransactionTable({
                   {t.remark}
                 </td>
 
-                {/* Amount */}
                 <td
                   className={`py-[18px] px-6 text-[15px] text-[#1B2528] font-medium text-right ${
                     !isLastRow ? "border-b border-[rgba(73,101,110,0.2)]" : ""
@@ -167,7 +204,6 @@ export default function TransactionTable({
                 >
                   {formattedAmount}
                 </td>
-
                 {/* Currency */}
                 <td
                   className={`py-[18px] px-6 text-[15px] text-[#1B2528] ${
@@ -177,7 +213,6 @@ export default function TransactionTable({
                   {t.currency}
                 </td>
 
-                {/* Type */}
                 <td
                   className={`py-[18px] pl-6 pr-0 ${
                     !isLastRow ? "border-b border-[rgba(73,101,110,0.2)]" : ""
