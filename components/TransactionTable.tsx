@@ -4,7 +4,7 @@ import React, { useState, useMemo } from "react";
 import { Transaction } from "@/types";
 
 interface TransactionTableProps {
-  transactions: Transaction[] | null; // null for loading state
+  transactions: Transaction[] | null;
   loading?: boolean;
 }
 
@@ -15,7 +15,6 @@ export default function TransactionTable({
   transactions,
   loading = false,
 }: TransactionTableProps) {
-  // Sorting state
   const [sortColumn, setSortColumn] = useState<SortColumn>("date");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
@@ -293,8 +292,7 @@ export default function TransactionTable({
           )}
         </tbody>
       </table>
-
-      {/* Mobile Sorting Controls */}
+      {/* Mobile Table */}
       <div className="sm:hidden flex items-center gap-2 mb-4 px-4">
         <label
           htmlFor="sortColumn"
