@@ -1,0 +1,23 @@
+import Header from "@/components/Header";
+
+export default function DashboardPage() {
+  return (
+    <div className="bg-[#FCFDFD] text-[#1B2528] min-h-screen">
+      Header
+      <div className="flex gap-12 p-5 md:p-7 lg:px-12 flex-col lg:flex-row">
+        Sidebar
+        <main className="flex-1 min-w-0">
+          <div className="flex flex-wrap justify-between items-center gap-3">
+            <div className="flex items-center gap-4">
+              <h1 className="text-[34px] font-bold tracking-tight">
+                Wallet Ledger
+              </h1>
+              StatusBadge
+            </div>
+          </div>
+          Tabs SummaryCards TransactionTable
+        </main>
+      </div>
+    </div>
+  );
+}
