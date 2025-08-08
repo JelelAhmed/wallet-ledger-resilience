@@ -5,7 +5,7 @@ import StatusBadge from "@/components/StatusBadge";
 
 export default function WalletLedgerHeader() {
   return (
-    <div className="flex flex-wrap justify-between items-center gap-4 mb-6 w-full">
+    <div className="flex flex-wrap justify-between items-center gap-4 w-full -mt-[4px]">
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1">
