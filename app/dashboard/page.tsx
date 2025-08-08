@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import Tabs from "@/components/Tabs";
 import SummaryCards from "@/components/SummaryCards";
+import StatusBadge from "@/components/Statusbadge";
 import { summaryData } from "@/data/mockData";
 
 export default function DashboardPage() {
@@ -16,7 +17,7 @@ export default function DashboardPage() {
               <h1 className="text-[34px] font-bold tracking-tight">
                 Wallet Ledger
               </h1>
-              StatusBadge
+              <StatusBadge status="Active" />
             </div>
           </div>
           <Tabs tabs={["Overview", "Transactions"]} activeTab="Overview" />
