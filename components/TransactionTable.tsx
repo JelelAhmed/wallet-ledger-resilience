@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Transaction } from "@/types";
 
 interface TransactionTableProps {
@@ -7,6 +10,57 @@ interface TransactionTableProps {
 export default function TransactionTable({
   transactions,
 }: TransactionTableProps) {
+  const [sortConfig, setSortConfig] = useState<{
+    key: keyof Transaction;
+    direction: "asc" | "desc";
+  } | null>(null);
+
+  const handleSort = (key: keyof Transaction) => {
+    setSortConfig((current) => {
+      if (current?.key === key) {
+        return {
+          key,
+          direction: current.direction === "asc" ? "desc" : "asc",
+        };
+      }
+      return { key, direction: "asc" };
+    });
+  };
+
+  const sortedTransactions = [...transactions].sort((a, b) => {
+    if (!sortConfig) return 0;
+    const { key, direction } = sortConfig;
+    const aValue = a[key];
+    const bValue = b[key];
+
+    // Handle numbers
+    if (typeof aValue === "number" && typeof bValue === "number") {
+      return direction === "asc" ? aValue - bValue : bValue - aValue;
+    }
+
+    // Handle strings
+    if (typeof aValue === "string" && typeof bValue === "string") {
+      return direction === "asc"
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    }
+
+    return 0;
+  });
+
+  const SortArrow = ({ column }: { column: keyof Transaction }) => {
+    const activeColor = "#2463EB";
+    const inactiveColor = "#94A3B8";
+
+    if (sortConfig?.key !== column)
+      return <span style={{ color: inactiveColor }}>▾</span>;
+    return (
+      <span style={{ color: activeColor }}>
+        {sortConfig.direction === "asc" ? "▴" : "▾"}
+      </span>
+    );
+  };
+
   return (
     <div className="mt-6 overflow-x-auto">
       {/* Desktop Table */}
@@ -22,51 +76,65 @@ export default function TransactionTable({
         <thead>
           <tr className="text-left text-[13px] font-medium text-[rgba(21,39,45,0.62)]">
             {/* Date */}
-            <th className="py-2 pl-0 pr-6 border-b-[1.5px] border-[rgba(73,101,110,0.2)]">
+            <th
+              className="py-2 pl-0 pr-6 border-b-[1.5px] border-[rgba(73,101,110,0.2)] cursor-pointer"
+              onClick={() => handleSort("date")}
+            >
               <div className="flex items-center gap-1">
                 <span>Date</span>
-                <span>▾</span>
+                <SortArrow column="date" />
               </div>
             </th>
             {/* Remark */}
-            <th className="py-2 px-6 border-b-[1.5px] border-[rgba(73,101,110,0.2)]">
+            <th
+              className="py-2 px-6 border-b-[1.5px] border-[rgba(73,101,110,0.2)] cursor-pointer"
+              onClick={() => handleSort("remark")}
+            >
               <div className="flex items-center gap-1">
                 <span>Remark</span>
-                <span>▾</span>
+                <SortArrow column="remark" />
               </div>
             </th>
             {/* Amount */}
-            <th className="py-2 px-6 border-b-[1.5px] border-[rgba(73,101,110,0.2)] text-right">
-              <div className="flex items-center gap-1">
+            <th
+              className="py-2 px-6 border-b-[1.5px] border-[rgba(73,101,110,0.2)] text-right cursor-pointer"
+              onClick={() => handleSort("amount")}
+            >
+              <div className="flex items-center gap-1 justify-end">
                 <span>Amount</span>
-                <span>▾</span>
+                <SortArrow column="amount" />
               </div>
             </th>
             {/* Currency */}
-            <th className="py-2 px-6 border-b-[1.5px] border-[rgba(73,101,110,0.2)]">
+            <th
+              className="py-2 px-6 border-b-[1.5px] border-[rgba(73,101,110,0.2)] cursor-pointer"
+              onClick={() => handleSort("currency")}
+            >
               <div className="flex items-center gap-1">
                 <span>Currency</span>
-                <span>▾</span>
+                <SortArrow column="currency" />
               </div>
             </th>
             {/* Type */}
-            <th className="py-2 pl-6 pr-0 border-b-[1.5px] border-[rgba(73,101,110,0.2)]">
+            <th
+              className="py-2 pl-6 pr-0 border-b-[1.5px] border-[rgba(73,101,110,0.2)] cursor-pointer"
+              onClick={() => handleSort("type")}
+            >
               <div className="flex items-center gap-1 justify-end">
                 <span>Type</span>
-                <span>▾</span>
+                <SortArrow column="type" />
               </div>
             </th>
           </tr>
         </thead>
 
         <tbody>
-          {transactions.map((t, index) => {
+          {sortedTransactions.map((t, index) => {
             const formattedAmount =
               t.amount < 0
                 ? `-$${Math.abs(t.amount).toLocaleString()}`
                 : `$${t.amount.toLocaleString()}`;
-
-            const isLastRow = index === transactions.length - 1;
+            const isLastRow = index === sortedTransactions.length - 1;
 
             return (
               <tr
@@ -136,7 +204,7 @@ export default function TransactionTable({
 
       {/* Mobile Table */}
       <div className="sm:hidden space-y-4 mt-4">
-        {transactions.map((t) => (
+        {sortedTransactions.map((t) => (
           <div
             key={t.id}
             className="p-4 border-b border-[rgba(73,101,110,0.2)] rounded-sm"
@@ -147,14 +215,12 @@ export default function TransactionTable({
               </span>
               <span className="text-[15px] text-[#1B2528]">{t.date}</span>
             </div>
-
             <div className="flex justify-between">
               <span className="font-medium text-[rgba(21,39,45,0.62)]">
                 Remark
               </span>
               <span className="text-[15px] text-[#1B2528]">{t.remark}</span>
             </div>
-
             <div className="flex justify-between">
               <span className="font-medium text-[rgba(21,39,45,0.62)]">
                 Amount
@@ -165,14 +231,12 @@ export default function TransactionTable({
                   : `$${t.amount.toLocaleString()}`}
               </span>
             </div>
-
             <div className="flex justify-between">
               <span className="font-medium text-[rgba(21,39,45,0.62)]">
                 Currency
               </span>
               <span className="text-[15px] text-[#1B2528]">{t.currency}</span>
             </div>
-
             <div className="flex justify-between items-center">
               <span className="font-medium text-[rgba(21,39,45,0.62)]">
                 Type
