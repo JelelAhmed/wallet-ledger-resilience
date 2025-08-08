@@ -3,7 +3,8 @@ import Sidebar from "@/components/Sidebar";
 import Tabs from "@/components/Tabs";
 import SummaryCards from "@/components/SummaryCards";
 import StatusBadge from "@/components/Statusbadge";
-import { summaryData } from "@/data/mockData";
+import TransactionTable from "@/components/TransactionTable";
+import { summaryData, transactions } from "@/data/mockData";
 
 export default function DashboardPage() {
   return (
@@ -22,7 +23,7 @@ export default function DashboardPage() {
           </div>
           <Tabs tabs={["Overview", "Transactions"]} activeTab="Overview" />
           <SummaryCards data={summaryData} />
-          TransactionTable
+          <TransactionTable transactions={transactions} />
         </main>
       </div>
     </div>

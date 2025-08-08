@@ -46,50 +46,6 @@ export default function TransactionTable({
       </table>
 
       {/* Mobile Table */}
-      <div className="sm:hidden space-y-4 mt-4">
-        {transactions.map((t) => (
-          <div
-            key={t.id}
-            className="p-4 border-b border-[rgba(73,101,110,0.2)]"
-          >
-            <div className="flex justify-between">
-              <span className="font-medium text-[rgba(21,39,45,0.62)]">
-                Date
-              </span>
-              {t.date}
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-[rgba(21,39,45,0.62)]">
-                Remark
-              </span>
-              {t.remark}
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-[rgba(21,39,45,0.62)]">
-                Amount
-              </span>
-              {t.amount}
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-[rgba(21,39,45,0.62)]">
-                Currency
-              </span>
-              {t.currency}
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-[rgba(21,39,45,0.62)]">
-                Type
-              </span>
-              <span
-                className={`inline-block w-2 h-2 rounded-full mr-1 ${
-                  t.type === "Credit" ? "bg-green-600" : "bg-red-600"
-                }`}
-              ></span>
-              {t.type}
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
