@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Wallet Ledger Resilience
+
+## Overview
+
+Wallet Ledger Resilience is a React + Next.js web application built with TypeScript and Tailwind CSS v3. It provides a clean, responsive dashboard to view, sort, and manage wallet transactions efficiently.
+
+## Features
+
+- Responsive dashboard for desktop and mobile views
+- Sortable transaction table by date, remark, amount, currency, and type
+- Loading states with skeleton placeholders
+- Clean, accessible UI with attention to detail and performance optimizations
+- Graceful handling of empty and invalid data states
+
+## Technologies Used
+
+- React 18 (with Next.js 13 App Router)
+- TypeScript for type safety
+- Tailwind CSS v3 for styling
+- Vercel for deployment
+
+## Live Application
+
+The application is deployed and accessible at:
+
+[https://wallet-ledger-resilience.vercel.app/dashboard](https://wallet-ledger-resilience.vercel.app/dashboard)
 
 ## Getting Started
 
-First, run the development server:
+To run the project locally:
 
 ```bash
+git clone https://github.com/JelelAhmed/wallet-ledger-resilience.git
+cd wallet-ledger-resilience
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
