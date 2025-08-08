@@ -1,4 +1,4 @@
-import { Transaction, DashboardSummary } from "@/types";
+import { Transaction, DashboardSummary, Participant } from "@/types";
 
 export const summaryData: DashboardSummary = {
   totalBalance: 12345,
@@ -83,5 +83,32 @@ export const transactions: Transaction[] = [
     amount: -200,
     currency: "USD",
     type: "Debit",
+  },
+];
+
+export const participantsData: Participant[] = [
+  {
+    name: "Ava",
+    imageUrl: "/images/ava.png",
+  },
+  {
+    name: "Liam",
+    imageUrl: "/images/liam.png",
+  },
+  {
+    name: "Noah",
+    imageUrl: "/images/noah.png",
+  },
+  {
+    name: "Emma",
+    imageUrl: "/images/emma.png",
+  },
+  {
+    name: "Olivia",
+    imageUrl: "/images/olivia.png",
+  },
+  {
+    name: "Mason",
+    imageUrl: "/images/mason.png",
   },
 ];

@@ -17,3 +17,8 @@ export interface DashboardSummary {
   debitsChange: number;
   transactionChange: number;
 }
+
+export type Participant = {
+  name: string;
+  imageUrl: string;
+};

@@ -3,8 +3,9 @@ import Sidebar from "@/components/Sidebar";
 import Tabs from "@/components/Tabs";
 import SummaryCards from "@/components/SummaryCards";
 import WalletLedgerHeader from "@/components/WalletLedgerHeader";
+import Participants from "@/components/Participants";
 import TransactionTable from "@/components/TransactionTable";
-import { summaryData, transactions } from "@/data/mockData";
+import { summaryData, transactions, participantsData } from "@/data/mockData";
 
 export default function DashboardPage() {
   return (
@@ -16,7 +17,16 @@ export default function DashboardPage() {
           {/* New Wallet Ledger header from Figma */}
           <WalletLedgerHeader />
 
-          <Tabs tabs={["Overview", "Transactions"]} activeTab="Overview" />
+          {/* Participants section - 28px below header */}
+          <div className="mt-7">
+            <Participants participants={participantsData} />
+          </div>
+
+          {/* Tabs - 28px below participants */}
+          <div className="mt-7">
+            <Tabs tabs={["Overview", "Transactions"]} activeTab="Overview" />
+          </div>
+
           <SummaryCards data={summaryData} />
           <TransactionTable transactions={transactions} />
         </main>
