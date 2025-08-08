@@ -1,4 +1,3 @@
-// components/Participants.tsx
 import Image from "next/image";
 import { Participant } from "@/types";
 
@@ -11,7 +10,6 @@ export default function Participants({
   participants = [],
   maxVisible = 4,
 }: ParticipantsProps) {
-  // participants is guaranteed to be an array (default [])
   const visibleParticipants = participants.slice(0, maxVisible);
   const remainingCount = Math.max(
     0,
@@ -20,7 +18,6 @@ export default function Participants({
 
   return (
     <div className="flex items-center gap-3">
-      {/* Profile Pictures (stacked) */}
       <div className="flex items-center isolate">
         {visibleParticipants.map((p, index) => (
           <div
@@ -40,7 +37,6 @@ export default function Participants({
         ))}
       </div>
 
-      {/* Names + Others */}
       <div className="flex items-center gap-1 text-[15px] leading-5 tracking-[-0.005em] text-[rgba(21,39,45,0.62)]">
         {visibleParticipants.map((p, idx) => (
           <span key={`name-${p.name}`} className="whitespace-nowrap">
